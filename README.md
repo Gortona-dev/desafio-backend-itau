@@ -215,10 +215,3 @@ Com Maven instalado, execute:
 ```bash
 mvn test
 ```
-
-## Melhorias futuras
-
-- Adicionar Swagger/OpenAPI.
-- Adicionar mais testes de controller com MockMvc.
-- Criar Dockerfile.
-- Permitir configurar a janela de estatistica via `application.properties`.
