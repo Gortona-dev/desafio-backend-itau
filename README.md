@@ -1,10 +1,14 @@
-# Desafio Backend Itau
+# Desafio Itau Backend
 
-Este projeto foi desenvolvido para resolver o desafio backend do Itau.
+Projeto desenvolvido com base no desafio:
 
-A aplicacao e uma API REST feita com Java e Spring Boot, responsavel por receber transacoes financeiras e retornar estatisticas das transacoes realizadas nos ultimos 60 segundos.
+[feltex/desafio-itau-backend](https://github.com/feltex/desafio-itau-backend)
 
-## Tecnologias utilizadas
+Esta API foi criada usando Java com Spring Boot, seguindo o que foi solicitado no desafio: receber transacoes, armazenar tudo em memoria e calcular estatisticas das transacoes realizadas nos ultimos 60 segundos.
+
+Usei Maven para gerenciar as dependencias e o IntelliJ IDEA como IDE de desenvolvimento. Os testes manuais da API foram feitos com Postman.
+
+## Tecnologias usadas
 
 - Java 21
 - Spring Boot
@@ -14,12 +18,12 @@ A aplicacao e uma API REST feita com Java e Spring Boot, responsavel por receber
 - IntelliJ IDEA
 - Postman
 
-## Objetivo do projeto
+## O que a API faz
 
-Criar uma API REST com os seguintes endpoints:
+A API possui tres endpoints principais:
 
-- `POST /transacao`: registra uma nova transacao.
-- `DELETE /transacao`: apaga todas as transacoes salvas em memoria.
+- `POST /transacao`: cadastra uma nova transacao.
+- `DELETE /transacao`: remove todas as transacoes salvas em memoria.
 - `GET /estatistica`: retorna as estatisticas das transacoes dos ultimos 60 segundos.
 
 As estatisticas retornadas sao:
@@ -30,29 +34,13 @@ As estatisticas retornadas sao:
 - `min`: menor valor.
 - `max`: maior valor.
 
-## Regras implementadas
+## Algumas decisoes do projeto
 
-- As transacoes sao armazenadas apenas em memoria.
-- Nao foi utilizado banco de dados.
-- Nao foi utilizada persistencia externa.
-- O valor da transacao nao pode ser negativo.
-- A data/hora da transacao nao pode estar no futuro.
-- Apenas transacoes dos ultimos 60 segundos entram no calculo da estatistica.
-- Foram utilizados status HTTP adequados para cada situacao.
+As transacoes foram armazenadas em memoria, sem banco de dados e sem persistencia externa, conforme solicitado no desafio.
 
-## Por que usar BigDecimal?
+Para representar o valor da transacao, usei `BigDecimal`, porque estamos lidando com dinheiro. Tipos como `double` e `float` podem gerar pequenas imprecisoes em calculos decimais, e isso nao e adequado para valores financeiros.
 
-O campo `valor` foi implementado com `BigDecimal` porque ele representa valores monetarios com mais seguranca e precisao.
-
-Tipos como `double` e `float` trabalham com ponto flutuante e podem gerar pequenas imprecisoes em calculos decimais. Como o projeto lida com dinheiro, essas imprecisoes nao sao desejadas.
-
-Por isso, `BigDecimal` e a melhor escolha para valores financeiros.
-
-## Por que usar OffsetDateTime?
-
-O campo `dataHora` foi implementado com `OffsetDateTime` porque ele armazena a data e hora junto com o offset do fuso horario.
-
-Isso deixa a API mais segura para trabalhar com horarios vindos de diferentes regioes e evita ambiguidades em comparacoes de tempo.
+Para a data e hora da transacao, usei `OffsetDateTime`, pois ele carrega tambem a informacao de offset/fuso horario, deixando a comparacao de datas mais segura.
 
 ## Estrutura do projeto
 
@@ -77,52 +65,6 @@ src/main/java/br/com/itau/desafiobackend
 └── DesafioBackendApplication.java
 ```
 
-## Papel de cada camada
-
-### Controller
-
-Camada responsavel por expor os endpoints REST da aplicacao.
-
-Classes:
-
-- `TransacaoController`
-- `EstatisticaController`
-
-### Service
-
-Camada responsavel pelas regras de negocio, como validar transacoes, armazenar em memoria e calcular estatisticas.
-
-Classe:
-
-- `TransacaoService`
-
-### DTO
-
-Camada responsavel pelos objetos de entrada e saida da API.
-
-Classes:
-
-- `TransacaoRequest`
-- `EstatisticaResponse`
-- `ErrorResponse`
-
-### Model
-
-Representa o modelo interno da transacao.
-
-Classe:
-
-- `Transacao`
-
-### Exception
-
-Camada responsavel pelo tratamento de erros da aplicacao.
-
-Classes:
-
-- `InvalidTransactionException`
-- `GlobalExceptionHandler`
-
 ## Como rodar no IntelliJ
 
 1. Abra o IntelliJ IDEA.
@@ -137,13 +79,13 @@ src/main/java/br/com/itau/desafiobackend/DesafioBackendApplication.java
 ```
 
 7. Clique no botao verde ao lado do metodo `main`.
-8. Aguarde aparecer no console:
+8. Aguarde aparecer no console algo parecido com:
 
 ```text
 Tomcat started on port 8080
 ```
 
-Depois disso, a API estara rodando em:
+Quando isso aparecer, a API estara rodando em:
 
 ```text
 http://localhost:8080
@@ -165,7 +107,7 @@ URL:
 http://localhost:8080/estatistica
 ```
 
-Resposta esperada quando nao existem transacoes:
+Resposta esperada quando ainda nao existe nenhuma transacao:
 
 ```json
 {
@@ -191,7 +133,9 @@ URL:
 http://localhost:8080/transacao
 ```
 
-Body:
+No Postman, va em `Body`, selecione `raw` e escolha `JSON`.
+
+Exemplo de body:
 
 ```json
 {
@@ -200,21 +144,35 @@ Body:
 }
 ```
 
-No Postman, selecione:
-
-- `Body`
-- `raw`
-- `JSON`
-
 Resposta esperada:
 
 ```text
 201 Created
 ```
 
-Importante: para aparecer na estatistica, a transacao precisa ter uma data/hora dentro dos ultimos 60 segundos.
+Importante: para a transacao aparecer no resultado de `/estatistica`, a `dataHora` precisa estar dentro dos ultimos 60 segundos.
 
-### Limpar transacoes
+### Ver estatisticas depois de criar transacoes
+
+Depois de cadastrar uma ou mais transacoes, faca novamente:
+
+```text
+GET http://localhost:8080/estatistica
+```
+
+Exemplo de resposta:
+
+```json
+{
+  "count": 1,
+  "sum": 100.5,
+  "avg": 100.5,
+  "min": 100.5,
+  "max": 100.5
+}
+```
+
+### Apagar todas as transacoes
 
 Metodo:
 
@@ -234,11 +192,15 @@ Resposta esperada:
 200 OK
 ```
 
-## Exemplos de erros
+## Validacoes
 
-### Valor negativo
+A API valida os seguintes casos:
 
-Request:
+- Valor da transacao negativo retorna `422 Unprocessable Entity`.
+- Data/hora da transacao no futuro retorna `422 Unprocessable Entity`.
+- JSON invalido ou campos obrigatorios ausentes retornam `400 Bad Request`.
+
+Exemplo de valor negativo:
 
 ```json
 {
@@ -247,43 +209,13 @@ Request:
 }
 ```
 
-Resposta esperada:
-
-```text
-422 Unprocessable Entity
-```
-
-### Data no futuro
-
-Request:
+Exemplo de data no futuro:
 
 ```json
 {
   "valor": 10.00,
   "dataHora": "2099-01-01T10:00:00-03:00"
 }
-```
-
-Resposta esperada:
-
-```text
-422 Unprocessable Entity
-```
-
-### JSON invalido ou campo ausente
-
-Request:
-
-```json
-{
-  "valor": 10.00
-}
-```
-
-Resposta esperada:
-
-```text
-400 Bad Request
 ```
 
 ## Como rodar os testes
@@ -294,10 +226,9 @@ Com Maven instalado, execute:
 mvn test
 ```
 
-## Melhorias opcionais
+## Melhorias futuras
 
-- Adicionar Swagger/OpenAPI para documentar os endpoints.
+- Adicionar Swagger/OpenAPI.
 - Adicionar mais testes de controller com MockMvc.
-- Configurar a janela de estatistica via `application.properties`.
-- Adicionar logs para facilitar monitoramento.
-- Criar Dockerfile para executar a aplicacao em container.
+- Criar Dockerfile.
+- Permitir configurar a janela de estatistica via `application.properties`.
