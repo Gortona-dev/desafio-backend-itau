@@ -8,16 +8,6 @@ Esta API foi criada usando Java com Spring Boot, seguindo o que foi solicitado n
 
 Usei Maven para gerenciar as dependencias e o IntelliJ IDEA como IDE de desenvolvimento. Os testes manuais da API foram feitos com Postman.
 
-## Tecnologias usadas
-
-- Java 21
-- Spring Boot
-- Spring Web
-- Bean Validation
-- Maven
-- IntelliJ IDEA
-- Postman
-
 ## O que a API faz
 
 A API possui tres endpoints principais:
@@ -226,9 +216,3 @@ Com Maven instalado, execute:
 mvn test
 ```
 
-## Melhorias futuras
-
-- Adicionar Swagger/OpenAPI.
-- Adicionar mais testes de controller com MockMvc.
-- Criar Dockerfile.
-- Permitir configurar a janela de estatistica via `application.properties`.
