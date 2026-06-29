@@ -1,4 +1,4 @@
-package br.com.itau.desafiobackend;
+package br.com.ortona.spring_boot_itau;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

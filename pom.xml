@@ -11,7 +11,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>br.com.itau</groupId>
+    <groupId>br.com.ortona</groupId>
     <artifactId>desafio-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>desafio-backend</name>

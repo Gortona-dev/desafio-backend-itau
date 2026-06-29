@@ -1,4 +1,4 @@
-package br.com.itau.desafiobackend.exception;
+package br.com.ortona.spring_boot_itau.exception;
 
 public class InvalidTransactionException extends RuntimeException {
 

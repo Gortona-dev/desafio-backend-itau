@@ -1,4 +1,4 @@
-package br.com.itau.desafiobackend.model;
+package br.com.ortona.spring_boot_itau.model;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;

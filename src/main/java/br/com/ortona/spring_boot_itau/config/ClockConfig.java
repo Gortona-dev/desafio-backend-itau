@@ -1,4 +1,4 @@
-package br.com.itau.desafiobackend.config;
+package br.com.ortona.spring_boot_itau.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

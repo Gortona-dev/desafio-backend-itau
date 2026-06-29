@@ -1,9 +1,9 @@
-package br.com.itau.desafiobackend.service;
+package br.com.ortona.spring_boot_itau.service;
 
-import br.com.itau.desafiobackend.dto.EstatisticaResponse;
-import br.com.itau.desafiobackend.dto.TransacaoRequest;
-import br.com.itau.desafiobackend.exception.InvalidTransactionException;
-import br.com.itau.desafiobackend.model.Transacao;
+import br.com.ortona.spring_boot_itau.dto.EstatisticaResponse;
+import br.com.ortona.spring_boot_itau.dto.TransacaoRequest;
+import br.com.ortona.spring_boot_itau.exception.InvalidTransactionException;
+import br.com.ortona.spring_boot_itau.model.Transacao;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

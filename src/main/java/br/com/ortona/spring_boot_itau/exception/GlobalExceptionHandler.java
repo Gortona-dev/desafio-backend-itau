@@ -1,6 +1,6 @@
-package br.com.itau.desafiobackend.exception;
+package br.com.ortona.spring_boot_itau.exception;
 
-import br.com.itau.desafiobackend.dto.ErrorResponse;
+import br.com.ortona.spring_boot_itau.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;

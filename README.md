@@ -8,6 +8,16 @@ Esta API foi criada usando Java com Spring Boot, seguindo o que foi solicitado n
 
 Usei Maven para gerenciar as dependencias e o IntelliJ IDEA como IDE de desenvolvimento. Os testes manuais da API foram feitos com Postman.
 
+## Tecnologias usadas
+
+- Java 21
+- Spring Boot
+- Spring Web
+- Bean Validation
+- Maven
+- IntelliJ IDEA
+- Postman
+
 ## O que a API faz
 
 A API possui tres endpoints principais:
@@ -35,7 +45,7 @@ Para a data e hora da transacao, usei `OffsetDateTime`, pois ele carrega tambem 
 ## Estrutura do projeto
 
 ```text
-src/main/java/br/com/itau/desafiobackend
+src/main/java/br/com/ortona/spring_boot_itau
 ├── config
 │   └── ClockConfig.java
 ├── controller
@@ -65,7 +75,7 @@ src/main/java/br/com/itau/desafiobackend
 6. Abra a classe:
 
 ```text
-src/main/java/br/com/itau/desafiobackend/DesafioBackendApplication.java
+src/main/java/br/com/ortona/spring_boot_itau/DesafioBackendApplication.java
 ```
 
 7. Clique no botao verde ao lado do metodo `main`.
@@ -215,3 +225,10 @@ Com Maven instalado, execute:
 ```bash
 mvn test
 ```
+
+## Melhorias futuras
+
+- Adicionar Swagger/OpenAPI.
+- Adicionar mais testes de controller com MockMvc.
+- Criar Dockerfile.
+- Permitir configurar a janela de estatistica via `application.properties`.
