@@ -1,136 +1,102 @@
-# Desafio Itau Backend
+<div align="center">
 
-Projeto desenvolvido com base no desafio:
+# Desafio Backend Itau
 
-[feltex/desafio-itau-backend](https://github.com/feltex/desafio-itau-backend)
+API REST em Java com Spring Boot para registrar transacoes em memoria e calcular estatisticas dos ultimos 60 segundos.
 
-Esta API foi criada usando Java com Spring Boot, seguindo o que foi solicitado no desafio: receber transacoes, armazenar tudo em memoria e calcular estatisticas das transacoes realizadas nos ultimos 60 segundos.
+![Java](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.5-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-Build-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
+![API REST](https://img.shields.io/badge/API-REST-60A5FA?style=for-the-badge)
 
-Usei Maven para gerenciar as dependencias e o IntelliJ IDEA como IDE de desenvolvimento. Os testes manuais da API foram feitos com Postman.
+</div>
 
-## O que a API faz
+---
 
-A API possui tres endpoints principais:
+## Objetivo
 
-- `POST /transacao`: cadastra uma nova transacao.
-- `DELETE /transacao`: remove todas as transacoes salvas em memoria.
-- `GET /estatistica`: retorna as estatisticas das transacoes dos ultimos 60 segundos.
+Este projeto foi desenvolvido como solucao para o desafio backend do Itau. A API recebe transacoes financeiras, armazena os dados em memoria e retorna estatisticas calculadas apenas com as transacoes realizadas nos ultimos 60 segundos.
 
-As estatisticas retornadas sao:
+O foco do projeto e praticar conceitos importantes de back-end:
 
-- `count`: quantidade de transacoes.
-- `sum`: soma dos valores.
-- `avg`: media dos valores.
-- `min`: menor valor.
-- `max`: maior valor.
+- criacao de API REST;
+- validacao de entrada;
+- tratamento global de excecoes;
+- uso correto de tipos para valores monetarios;
+- separacao entre controller, service, DTO e model;
+- testes automatizados da regra de negocio.
 
-## Algumas decisoes do projeto
+## Funcionalidades
 
-As transacoes foram armazenadas em memoria, sem banco de dados e sem persistencia externa, conforme solicitado no desafio.
+- Criar uma transacao.
+- Remover todas as transacoes em memoria.
+- Consultar estatisticas em tempo real.
+- Validar transacoes com valor negativo.
+- Validar transacoes com data futura.
+- Retornar erros padronizados para requisicoes invalidas.
+- Calcular `count`, `sum`, `avg`, `min` e `max`.
 
-Para representar o valor da transacao, usei `BigDecimal`, porque estamos lidando com dinheiro. Tipos como `double` e `float` podem gerar pequenas imprecisoes em calculos decimais, e isso nao e adequado para valores financeiros.
+## Tecnologias
 
-Para a data e hora da transacao, usei `OffsetDateTime`, pois ele carrega tambem a informacao de offset/fuso horario, deixando a comparacao de datas mais segura.
+| Tecnologia | Uso |
+| --- | --- |
+| Java 21 | Linguagem principal |
+| Spring Boot | Estrutura da API |
+| Spring Web | Criacao dos endpoints REST |
+| Spring Validation | Validacao dos dados recebidos |
+| Maven | Gerenciamento de dependencias e build |
+| JUnit | Testes automatizados |
 
-## Estrutura do projeto
+## Endpoints
 
-```text
-src/main/java/br/com/ortona/spring_boot_itau
-├── config
-│   └── ClockConfig.java
-├── controller
-│   ├── EstatisticaController.java
-│   └── TransacaoController.java
-├── dto
-│   ├── ErrorResponse.java
-│   ├── EstatisticaResponse.java
-│   └── TransacaoRequest.java
-├── exception
-│   ├── GlobalExceptionHandler.java
-│   └── InvalidTransactionException.java
-├── model
-│   └── Transacao.java
-├── service
-│   └── TransacaoService.java
-└── DesafioBackendApplication.java
+| Metodo | Rota | Descricao |
+| --- | --- | --- |
+| `POST` | `/transacao` | Registra uma nova transacao |
+| `DELETE` | `/transacao` | Remove todas as transacoes |
+| `GET` | `/estatistica` | Retorna estatisticas dos ultimos 60 segundos |
+
+## Como Rodar Localmente
+
+### Requisitos
+
+- Java 21
+- Maven instalado ou uso do Maven Wrapper, caso exista no ambiente
+- Postman, Insomnia ou outro cliente HTTP para testar
+
+### 1. Clonar o repositorio
+
+```bash
+git clone https://github.com/Gortona-dev/desafio-backend-itau.git
+cd desafio-backend-itau
 ```
 
-## Como rodar no IntelliJ
+### 2. Instalar dependencias e rodar
 
-1. Abra o IntelliJ IDEA.
-2. Clique em `File > Open`.
-3. Selecione a pasta do projeto.
-4. Aguarde o IntelliJ importar o projeto Maven.
-5. Confirme que o projeto esta usando Java 21.
-6. Abra a classe:
+Com Maven instalado:
 
-```text
-src/main/java/br/com/ortona/spring_boot_itau/DesafioBackendApplication.java
+```bash
+mvn spring-boot:run
 ```
 
-7. Clique no botao verde ao lado do metodo `main`.
-8. Aguarde aparecer no console algo parecido com:
-
-```text
-Tomcat started on port 8080
-```
-
-Quando isso aparecer, a API estara rodando em:
+A API ficara disponivel em:
 
 ```text
 http://localhost:8080
 ```
 
-## Como testar no Postman
+## Como Testar a API
 
-### Consultar estatisticas
+### Criar transacao
 
-Metodo:
-
-```text
-GET
+```http
+POST http://localhost:8080/transacao
+Content-Type: application/json
 ```
-
-URL:
-
-```text
-http://localhost:8080/estatistica
-```
-
-Resposta esperada quando ainda nao existe nenhuma transacao:
-
-```json
-{
-  "count": 0,
-  "sum": 0,
-  "avg": 0,
-  "min": 0,
-  "max": 0
-}
-```
-
-### Criar uma transacao
-
-Metodo:
-
-```text
-POST
-```
-
-URL:
-
-```text
-http://localhost:8080/transacao
-```
-
-No Postman, va em `Body`, selecione `raw` e escolha `JSON`.
-
-Exemplo de body:
 
 ```json
 {
   "valor": 100.50,
-  "dataHora": "2026-06-29T15:30:00-03:00"
+  "dataHora": "2026-08-30T10:15:30-03:00"
 }
 ```
 
@@ -140,13 +106,11 @@ Resposta esperada:
 201 Created
 ```
 
-Importante: para a transacao aparecer no resultado de `/estatistica`, a `dataHora` precisa estar dentro dos ultimos 60 segundos.
+Importante: para a transacao entrar no calculo de estatisticas, a data deve estar dentro dos ultimos 60 segundos.
 
-### Ver estatisticas depois de criar transacoes
+### Consultar estatisticas
 
-Depois de cadastrar uma ou mais transacoes, faca novamente:
-
-```text
+```http
 GET http://localhost:8080/estatistica
 ```
 
@@ -162,18 +126,10 @@ Exemplo de resposta:
 }
 ```
 
-### Apagar todas as transacoes
+### Limpar transacoes
 
-Metodo:
-
-```text
-DELETE
-```
-
-URL:
-
-```text
-http://localhost:8080/transacao
+```http
+DELETE http://localhost:8080/transacao
 ```
 
 Resposta esperada:
@@ -184,35 +140,33 @@ Resposta esperada:
 
 ## Validacoes
 
-A API valida os seguintes casos:
+| Caso | Status esperado |
+| --- | --- |
+| Valor negativo | `422 Unprocessable Entity` |
+| Data no futuro | `422 Unprocessable Entity` |
+| JSON invalido | `400 Bad Request` |
+| Campos obrigatorios ausentes | `400 Bad Request` |
 
-- Valor da transacao negativo retorna `422 Unprocessable Entity`.
-- Data/hora da transacao no futuro retorna `422 Unprocessable Entity`.
-- JSON invalido ou campos obrigatorios ausentes retornam `400 Bad Request`.
-
-Exemplo de valor negativo:
-
-```json
-{
-  "valor": -10.00,
-  "dataHora": "2026-06-29T15:30:00-03:00"
-}
-```
-
-Exemplo de data no futuro:
-
-```json
-{
-  "valor": 10.00,
-  "dataHora": "2099-01-01T10:00:00-03:00"
-}
-```
-
-## Como rodar os testes
-
-Com Maven instalado, execute:
+## Rodar Testes
 
 ```bash
 mvn test
 ```
+
+## Estrutura
+
+```text
+src/main/java/br/com/ortona/spring_boot_itau/
++-- config/
++-- controller/
++-- dto/
++-- exception/
++-- model/
++-- service/
++-- DesafioBackendApplication.java
+```
+
+## Autor
+
+Desenvolvido por [Gabriel Ortona](https://github.com/Gortona-dev).
 
